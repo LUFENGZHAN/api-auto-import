@@ -1,5 +1,5 @@
 class apiAutoImport {
-    public options
+    private options
     constructor(config:Object) {
       this.options = config;
     }
@@ -15,4 +15,4 @@ class apiAutoImport {
     }
   }
   
-export default apiAutoImport;
+  module.exports = apiAutoImport;

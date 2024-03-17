@@ -1,4 +1,4 @@
-export default function apiAutoImport(config:Object) {
+module.exports = function apiAutoImport(config:Object) {
     return {
         name: 'api-auto-import',
         configureServer(server: any) {
