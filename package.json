@@ -1,0 +1,55 @@
+{
+    "name": "api-auto-import",
+    "version": "0.0.2",
+    "exports": {
+        "./vite": {
+            "import": {
+                "types": "./dist/vite.d.ts",
+                "default": "./dist/vite.js"
+            },
+            "require": {
+                "types": "./dist/vite.d.ts",
+                "default": "./dist/vite.js"
+            }
+        },
+        "./webpack": {
+            "import": {
+                "types": "./dist/webpack.d.ts",
+                "default": "./dist/webpack.js"
+            },
+            "require": {
+                "types": "./dist/webpack.d.ts",
+                "default": "./dist/webpack.js"
+            }
+        }
+    },
+    "license": "MIT",
+    "devDependencies": {
+        "@types/node": "^20.11.28"
+    },
+    "keywords": [
+        "plugin",
+        "vite",
+        "webpack"
+    ],
+    "typesVersions": {
+        "*": {
+            "*": [
+                "./dist/*",
+                "./*"
+            ]
+        }
+    },
+    "files": [
+        "dist"
+    ],
+    "engines": {
+        "node": ">=14"
+    },
+    "dependencies": {
+        "fs": "^0.0.1-security",
+        "lodash": "^4.17.21",
+        "path": "^0.12.7",
+        "vite": "^5.1.6"
+    }
+}
