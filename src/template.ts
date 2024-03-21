@@ -2,9 +2,14 @@
 // @ts-ignore
 <%=apiImport%>;
 
-export const <%=%> = <%=dataApi%>;
+export const <%=constApiData%> = <%=dataApi%>;
 
 
+declare global {
+    interface Window {
+        $<%=constApiData=>: typeof <%=dataApi%>;
+    }
+}
 export default {
     install(app:App<Element>){
         app.config.globalProperties.$<%= constApiData %> = <%=dataApi%>;
@@ -12,5 +17,5 @@ export default {
     }
 }
 declare global {
-    const <%= apis %>:typeof <%= constApiData %>;
+    const $<%= constApiData %>:typeof <%= constApiData %>;
 }
