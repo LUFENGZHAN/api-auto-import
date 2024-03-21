@@ -6,8 +6,9 @@ module.exports = function apiAutoImport(options?: Options): Plugin {
     Object.assign(config, options);
     const reg = new RegExp(config.resolveName.replace(/\//g, "\\\\"), "g");
     const outFileName = config.outFile.replace(/\.[tj]s$/, "");
-    const dirPath = path.resolve(process.cwd(), config.resolveName);
-    const dirPathNname = path.resolve(process.cwd(), config.resolveName, outFileName);
+    const currentDir = process.cwd()
+    const dirPath = path.join(currentDir, config.resolveName);
+    const dirPathNname = path.join(currentDir, config.resolveName, outFileName);
     apiAuto(config, dirPath, dirPathNname);
     return {
         name: "api-auto-import",
