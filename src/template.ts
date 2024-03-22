@@ -2,7 +2,7 @@
 import {App} from "vue";
 <%=apiImport%>
 
-export const <%=constApiData%> = <%=constApiData%>;
+export const <%=constApiData%> = <%=apiDate%>;
 declare global {
     const <%=apiName%>:typeof <%= constApiData %>;
     interface Window {
