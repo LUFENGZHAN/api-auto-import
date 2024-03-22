@@ -2,11 +2,11 @@ import {Options, config} from "./type";
 import {Plugin} from "vite";
 import apiAuto from "./index";
 import path from "path";
-module.exports = function apiAutoImport(options?: Options): Plugin {
+module.exports = function apiAutoImport(options: Options): Plugin {
     Object.assign(config, options);
     const resolveName = config.resolveAliasName.replace(/@/g, "src");
     const outFileName = config.outFile.replace(/\.[tj]s$/, "");
-    const reg = new RegExp(resolveName.replace(/(\\+|\/)/,'\\\\'), "ig");
+    const reg = new RegExp(resolveName.replace(/(\/)/img,'\\\\'), "ig");
     const currentDir = process.cwd();
     const dirPath = path.join(currentDir, resolveName);
     const dirPathNname = path.join(currentDir, resolveName, outFileName);

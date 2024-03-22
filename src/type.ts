@@ -1,19 +1,21 @@
+// 导出接口Options
 export interface Options {
-    [key: string]: any;
-    name?:string;
-    outFile:string;
-    resolveAliasName:string;
-    constApiData?:string;
-    outdir?:string;
+    // 输出文件名称
+    outFile: string;
+    // 导入别名
+    resolveAliasName: string;
+    // 全局的模块名称
+    apiName?: string;
+    // 变量名称
+    constApiData?: string;
+    // 导入是否携带后缀名
+    suffix?: boolean;
 }
-export const config:Options={
-    outFile:'index.ts',
-    resolveAliasName:'/src/api',
-    apiName:'$apis',
-    constApiData:'$apiDate',
-    include:[
-        /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
-        /\.vue$/, /\.vue\?vue/, // .vue
-        /\.md$/, // .md
-    ],
+// 导出配置config
+export const config: Options = {
+    outFile: 'index.ts',
+    resolveAliasName: 'src/api',
+    apiName: '$apis',
+    suffix: false,
+    constApiData: '$apiDate',
 }

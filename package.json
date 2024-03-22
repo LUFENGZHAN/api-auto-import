@@ -30,7 +30,8 @@
     "keywords": [
         "plugin",
         "vite",
-        "webpack"
+        "webpack",
+        "path"
     ],
     "typesVersions": {
         "*": {
@@ -41,7 +42,8 @@
         }
     },
     "files": [
-        "dist"
+        "dist",
+        "src/template.ts"
     ],
     "engines": {
         "node": ">=14"
