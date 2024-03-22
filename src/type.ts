@@ -2,15 +2,14 @@ export interface Options {
     [key: string]: any;
     name?:string;
     outFile:string;
-    resolveName:string;
-    resolveAliasName?:string;
-    constApiData?:string
+    resolveAliasName:string;
+    constApiData?:string;
+    outdir?:string;
 }
-export const config:Partial<Options>={
+export const config:Options={
     outFile:'index.ts',
-    resolveAliasName:'@/api/apis',
-    resolveName:'/src/api',
-    name:'$apis',
+    resolveAliasName:'/src/api',
+    apiName:'$apis',
     constApiData:'$apiDate',
     include:[
         /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx

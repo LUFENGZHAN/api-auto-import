@@ -1,21 +1,17 @@
 /*eslint-disable*/
-// @ts-ignore
-<%=apiImport%>;
+import {App} from "vue";
+<%=apiImport%>
 
-export const <%=constApiData%> = <%=dataApi%>;
-
-
+export const <%=constApiData%> = <%=constApiData%>;
 declare global {
+    const <%=apiName%>:typeof <%= constApiData %>;
     interface Window {
-        $<%=constApiData=>: typeof <%=dataApi%>;
+        <%=apiName%> : typeof <%=constApiData%>;
     }
 }
 export default {
     install(app:App<Element>){
-        app.config.globalProperties.$<%= constApiData %> = <%=dataApi%>;
-        window.$<%= constApiData %> = <%=dataApi%>;
+        app.config.globalProperties.<%= apiName %> = <%=constApiData%>;
+        window.<%= apiName %> = <%=constApiData%>;
     }
-}
-declare global {
-    const $<%= constApiData %>:typeof <%= constApiData %>;
 }
