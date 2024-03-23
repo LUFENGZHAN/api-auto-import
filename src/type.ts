@@ -13,7 +13,7 @@ export interface Options {
     files?:Array<RegExp>
 }
 // 导出配置config
-export const config: Options = {
+export const configuration: Options = {
     outFile: 'index.ts',
     resolveAliasName: 'src/api',
     apiName: '$apis',

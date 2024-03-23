@@ -33,6 +33,7 @@
         "webpack",
         "path"
     ],
+    "sideEffects": false,
     "typesVersions": {
         "*": {
             "*": [

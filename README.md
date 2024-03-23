@@ -54,7 +54,7 @@ export default defineConfig({
     plugins: [
         apiAuto({
             resolveAliasName: "@/api",
-            outFile: "index",
+            outFile: "index",//不写后缀名默认ts文件
         }),
     ],
 });
@@ -63,9 +63,9 @@ export default defineConfig({
 webpack
 
 ```js
-// vue.config
-const {defineConfig} = require("@vue/cli-service");
-const apiAuto = require("api-auto-import/webpack");
+// vue.config.js
+const { defineConfig } = require('@vue/cli-service')
+const apiAuto = require('api-auto-import/webpack')
 module.exports = defineConfig({
     transpileDependencies: true,
     configureWebpack: {
@@ -76,5 +76,5 @@ module.exports = defineConfig({
             }),
         ],
     },
-});
+})
 ```

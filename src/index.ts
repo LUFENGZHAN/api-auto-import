@@ -1,6 +1,7 @@
-import { Options } from "./type";
 import path from "path";
 import fs from "fs";
+import { Options, configuration } from "./type";
+import { Plugin } from "vite";
 import lodash from "lodash";
 function isMatchingFormat(str, files) {
     for (let i = 0; i < files.length; i++) {
@@ -33,7 +34,6 @@ function getAllFilePaths(directoryPath: string, dirPathNname: string, config: Op
                 }
                 return;
             }
-            console.log();
             const is_same = newPath.replace(/\.[tj]s/g, "");
             if (is_same !== dirPathNname && isMatchingFormat(newPath, files)) {
                 const pathStr = (suffix ? newPath : is_same).replace(directoryPath, resolveAliasName).replace(/\\+/g, "/")
@@ -62,7 +62,7 @@ function template(allFilePaths, config: Options) {
                 .replace(/.[jt]s/, ""),
             pathStr: replacedStr(pathStr).replace(/@\//, "").replace(allFilePathsStr[1], "")
                 .replace(/\./img, "_").replace(/(\\+|\/+)/img, "/").replace(/.[jt]s/, ""),
-            import: pathStr.replace(/(\\+|\/+)/img, "/")
+            import: pathStr.replace(/(\\+|\/+)/img, "/").replace(/^(\/)/, "")
         };
     });
     const apiImport = allPaths.reduce((previousValue: string, currentValue: any) => {
@@ -81,18 +81,52 @@ function template(allFilePaths, config: Options) {
             }
         });
     });
-    console.log(JSON.stringify(transformedData).replace(/"|'/img,''));
-    Object.assign(config, { apiImport, apiDate: JSON.stringify(transformedData, null,4).replace(/"|'/img,'') });
+    Object.assign(config, { apiImport, apiDate: JSON.stringify(transformedData, null, 4).replace(/"|'/img, '') });
     return lodash.template(fs.readFileSync(path.resolve(__dirname, "../src/template.ts")), "utf-8")(config);
 }
-function traverseFiles(config: Options, outpath: string, dirPathNname: string) {
+export function apiAutoImport(config: Options, outpath: string, dirPathNname: string) {
     const { outFile } = config;
     const allFilePaths = getAllFilePaths(outpath, dirPathNname, config)
     const templateString = template(allFilePaths, config);
     const outFileStr = outFile.match(/(\.[jt]s|\.[tj]sx)$/) ? outFile : `${outFile}.ts`;
     fs.writeFileSync(path.resolve(outpath, outFileStr), templateString);
 }
-function apiAutoImport(options: Options, targetPath: string, dirPathNname: string) {
-    traverseFiles(options, targetPath, dirPathNname);
+export function apiAutoVite(options: Options): Plugin {
+    Object.assign(configuration, options);
+    const resolveName = configuration.resolveAliasName.replace(/@/g, "src");
+    const outFileName = configuration.outFile.replace(/\.[tj]s$/, "");
+    const reg = new RegExp(resolveName.replace(/(\/)/img, '\\\\'), "ig");
+    const currentDir = process.cwd();
+    const dirPath = path.join(currentDir, resolveName);
+    const dirPathNname = path.join(currentDir, resolveName, outFileName);
+    apiAutoImport(configuration, dirPath, dirPathNname);
+    return {
+        name: "api-auto-import",
+        configureServer(server) {
+            server.watcher.on("all", (type, path) => {
+                if (path.match(reg)) {
+                    apiAutoImport(configuration, dirPath, dirPathNname);
+                }
+            });
+            server.watcher.add(dirPath);
+        },
+    };
+};
+export class apiAutoWebpack {
+    private options
+    private dirPath
+    private dirPathNname
+    constructor(options: Options) {
+        this.options = Object.assign({}, configuration, options);
+        const resolveName = this.options.resolveAliasName.replace(/@/g, "src");
+        const outFileName = this.options.outFile.replace(/\.[tj]s$/, "");
+        const reg = new RegExp(resolveName.replace(/(\/)/img, '\\\\'), "ig");
+        const currentDir = process.cwd();
+        this.dirPath = path.join(currentDir, resolveName);
+        this.dirPathNname = path.join(currentDir, resolveName, outFileName);
+    }
+    apply(compiler) {
+        const { options, dirPath, dirPathNname } = this;
+        apiAutoImport(options, dirPath, dirPathNname);
+    }
 }
-export default apiAutoImport;
