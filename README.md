@@ -9,6 +9,7 @@ npm install api-auto-import
 ```
 
 ### 使用方法
+
 ```js
 export interface Options {
     // 输出文件名称
@@ -17,20 +18,26 @@ export interface Options {
     resolveAliasName: string;
     // 全局的模块名称
     apiName?: string;
-    // 变量名称
+    // 导入变量名称
     constApiData?: string;
-    // 导入是否携带后缀名
+    // 导入是否携带文件后缀名
     suffix?: boolean;
+    // 需要导入的文件类型默认.ts, .tsx, .js, .jsx
+    files?:Array<RegExp>
 }
 // 导出配置config
 export const config: Options = {
-    outFile: 'index.ts',
-    resolveAliasName: 'src/api',
-    apiName: '$apis',
+    outFile: "index.ts",
+    resolveAliasName: "src/api",
+    apiName: "$apis",
     suffix: false,
-    constApiData: '$apiDate',
-}
+    constApiData: "$apiDate",
+    files: [
+        /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+    ],
+};
 ```
+
 ###### vite
 
 ```js

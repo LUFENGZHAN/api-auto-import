@@ -10,6 +10,7 @@ export interface Options {
     constApiData?: string;
     // 导入是否携带后缀名
     suffix?: boolean;
+    files?:Array<RegExp>
 }
 // 导出配置config
 export const config: Options = {
@@ -18,4 +19,7 @@ export const config: Options = {
     apiName: '$apis',
     suffix: false,
     constApiData: '$apiDate',
+    files: [
+        /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+    ],
 }
