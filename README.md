@@ -54,7 +54,7 @@ export default defineConfig({
     plugins: [
         apiAuto({
             resolveAliasName: "@/api",
-            outFile: "index",//不写后缀名默认ts文件
+            outFile: "index.ts",
         }),
     ],
 });
@@ -72,7 +72,7 @@ module.exports = defineConfig({
         plugins: [
             new apiAuto({
                 resolveAliasName: "@/api",
-                outFile: "index",
+                outFile: "index.ts",
             }),
         ],
     },
