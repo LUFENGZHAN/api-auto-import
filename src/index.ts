@@ -78,14 +78,15 @@ function template(allFilePaths, config: Options) {
         let currentLevel = transformedData;
         for (let i = 0; i < parts.length; i++) {
             const part = parts[i];
-            if (i === parts.length - 1 && !currentLevel[part]) {
+            const nextLevel =i === parts.length - 1;
+            if (nextLevel && !currentLevel[part]) {
                 currentLevel[part] = item.importName;
             } else {
                 currentLevel[part] = currentLevel[part] || {};
                 currentLevel = currentLevel[part];
             }
-            if (i === parts.length - 1) {
-                currentLevel[item.importName] = item.importName;
+            if (nextLevel) {
+                currentLevel[part] = item.importName;
             }
         }
     });
