@@ -75,25 +75,25 @@ function template(allFilePaths, config: Options) {
     const transformedData = {};
     allPaths.forEach((item) => {
         const parts = item.pathStr.split("/").filter((part) => part !== "");
-        let currentLevel = {};
-        parts.forEach((part, index, arr) => {
-            console.log(arr,part,arr[arr.length - 1]);
-            if (part === arr[arr.length - 1]) {
+        let currentLevel = transformedData;
+        for (let i = 0; i < parts.length; i++) {
+            const part = parts[i];
+            if (i === parts.length - 1 && !currentLevel[part]) {
                 currentLevel[part] = item.importName;
             } else {
-                console.log(currentLevel[part] );
                 currentLevel[part] = currentLevel[part] || {};
                 currentLevel = currentLevel[part];
             }
-        });
-        console.log(currentLevel);
+            if (i === parts.length - 1) {
+                currentLevel[item.importName] = item.importName;
+            }
+        }
     });
-
-    console.log(transformedData);
     Object.assign(config, {apiImport, apiDate: JSON.stringify(transformedData, null, 4).replace(/"|'/gim, "")});
     return lodash.template(fs.readFileSync(path.resolve(__dirname, "../src/template.ts")), "utf-8")(config);
 }
 function apiAutoImport(config: Options, outpath: string, dirPathNname: string) {
+    if (!fs.existsSync(outpath)) return console.warn('\x1b[33m%s\x1b[0m',`'${outpath}' not exist`);
     const {outFile} = config;
     const allFilePaths = getAllFilePaths(outpath, dirPathNname, config);
     const templateString = template(allFilePaths, config);
@@ -102,8 +102,8 @@ function apiAutoImport(config: Options, outpath: string, dirPathNname: string) {
 }
 function getConfig(options: Options) {
     const config = Object.assign({}, configuration, options);
-    const resolveName = configuration.resolveAliasName.replace(/@/g, "src");
-    const outFileName = configuration.outFile.replace(/\.[tj]s$/, "");
+    const resolveName = config.resolveAliasName.replace(/@/g, "src");
+    const outFileName = config.outFile.replace(/\.[tj]s$/, "");
     const reg = new RegExp(resolveName.replace(/(\/)/gim, "\\\\"), "ig");
     const currentDir = process.cwd();
     const dirPath = path.join(currentDir, resolveName);
