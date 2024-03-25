@@ -37,7 +37,16 @@ export const config: Options = {
     ],
 };
 ```
-
+``` js
+// tsconfig.json
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"]
+    },                             
+  }
+}
+```
 ###### vite
 
 ```js
@@ -77,6 +86,32 @@ module.exports = defineConfig({
         ],
     },
 })
+```
+```js
+// webpack.config.js
+// Generated using webpack-cli https://github.com/webpack/webpack-cli
+const path = require('path');
+const apiAuto = require('api-auto-import/webpack')
+module.exports ={
+    plugins: [
+        new apiAuto({
+            resolveAliasName: "@/api",
+            outFile: "index.ts",
+        }),
+    ],
+    resolve: {
+        alias: {
+            "@": path.resolve(__dirname, "src"),
+        },
+    },
+}
+
+```
+### 注意
+请确您的项目配置好支持import,使用TypeScript,使用ES6语法
+###### 示例
+```js
+import index from '@/api/index'
 ```
 ###### 备注
 修复同层级下，文件夹名称和文件夹下的文件名相同导致无法导出的问题
