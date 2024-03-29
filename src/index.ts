@@ -78,7 +78,7 @@ function template(allFilePaths, config: Options) {
         let currentLevel = transformedData;
         for (let i = 0; i < parts.length; i++) {
             const part = parts[i];
-            const nextLevel =i === parts.length - 1;
+            const nextLevel = i === parts.length - 1;
             if (nextLevel && !currentLevel[part]) {
                 currentLevel[part] = item.importName;
             } else {
@@ -94,7 +94,7 @@ function template(allFilePaths, config: Options) {
     return lodash.template(fs.readFileSync(path.resolve(__dirname, "../src/template.ts")), "utf-8")(config);
 }
 function apiAutoImport(config: Options, outpath: string, dirPathNname: string) {
-    if (!fs.existsSync(outpath)) return console.warn('\x1b[33m%s\x1b[0m',`'${outpath}' not exist`);
+    if (!fs.existsSync(outpath)) return console.warn("\x1b[33m%s\x1b[0m", `'${outpath}' not exist`);
     const {outFile} = config;
     const allFilePaths = getAllFilePaths(outpath, dirPathNname, config);
     const templateString = template(allFilePaths, config);
@@ -125,7 +125,7 @@ export function apiAutoVite(options: Options): Plugin {
         name: "api-auto-import",
         configureServer(server) {
             server.watcher.on("all", (type, path) => {
-                if (path.match(config.reg)) {
+                if (path.match(config.reg) && config.config.hotUpdate) {
                     apiAutoImport(config.config, config.dirPath, config.dirPathNname);
                 }
             });
@@ -140,6 +140,20 @@ export class apiAutoWebpack {
     }
     apply(compiler) {
         const {config} = this;
-        apiAutoImport(config.config, config.dirPath, config.dirPathNname);
+        const regexPattern = new RegExp(this.escapeRegExp(config.dirPathNname))
+        compiler.hooks.afterEnvironment.tap("api-auto-import", () => {
+            compiler.options.watchOptions.ignored =regexPattern;
+        });
+        if (config.config.hotUpdate) {
+            compiler.hooks.emit.tap("api-auto-import", compilation => {
+                apiAutoImport(config.config, config.dirPath, config.dirPathNname);
+            });
+        }else{
+            apiAutoImport(config.config, config.dirPath, config.dirPathNname);
+        }
+
+    }
+    escapeRegExp(string) {
+        return string.replace(/\\+/img, "/");
     }
 }
