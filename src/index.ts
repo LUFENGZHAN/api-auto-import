@@ -70,7 +70,10 @@ function template(allFilePaths, config: Options) {
         };
     });
     const apiImport = allPaths.reduce((previousValue: string, currentValue: any) => {
-        return previousValue + `// @ts-ignore \nimport ${currentValue.importName} from '${currentValue.import}'\n`;
+        return previousValue + `// @ts-ignore\nimport ${currentValue.importName} from '${currentValue.import}'\n`;
+    }, "");
+    const constApiImport = allPaths.reduce((previousValue: string, currentValue: any) => {
+        return previousValue + `// @ts-ignore\nexport const import_${currentValue.importName} = ${currentValue.importName}\n`;
     }, "");
     const transformedData = {};
     allPaths.forEach((item) => {
@@ -90,7 +93,7 @@ function template(allFilePaths, config: Options) {
             }
         }
     });
-    Object.assign(config, {apiImport, apiDate: JSON.stringify(transformedData, null, 4).replace(/"|'/gim, "")});
+    Object.assign(config, {apiImport,constApiImport, apiDate: JSON.stringify(transformedData, null, 4).replace(/"|'/gim, "")});
     return lodash.template(fs.readFileSync(path.resolve(__dirname, "../src/template.ts")), "utf-8")(config);
 }
 function apiAutoImport(config: Options, outpath: string, dirPathNname: string) {

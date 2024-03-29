@@ -18,11 +18,13 @@ export interface Options {
     resolveAliasName: string;
     // 全局的模块名称
     apiName?: string;
-    // 导入变量名称
+    // 变量名称
     constApiData?: string;
-    // 导入是否携带文件后缀名
+    // 是否采用文件热更新
+    hotUpdate?:boolean;
+    // 导入是否携带后缀名
     suffix?: boolean;
-    // 需要导入的文件类型默认.ts, .tsx, .js, .jsx
+    // 需要导出文件类型
     files?:Array<RegExp>
 }
 // 导出配置config
@@ -30,6 +32,7 @@ export const config: Options = {
     outFile: "index.ts",
     resolveAliasName: "src/api",
     apiName: "$apis",
+    hotUpdate: true,
     suffix: false,
     constApiData: "$apiDate",
     files: [
@@ -108,10 +111,19 @@ module.exports ={
 
 ```
 ### 注意
+使用时，请确保resolve配置正确，否则无法正确解析
+
 请确您的项目配置好支持import,使用TypeScript,使用ES6语法
 ###### 示例
 ```js
 import index from '@/api/index'
 ```
 ###### 备注
-修复同层级下，文件夹和文件名相同导致无法导出的问题
+webpack.config.js或vue.config.js 中热更新可能无法生效或出现无限循环，请使用hotUpdate入参关闭热更新
+```js
+new apiAuto({
+    resolveAliasName: "@/api",
+    outFile: "index.ts",
+    hotUpdate: false,
+})
+```
