@@ -13,7 +13,8 @@ export interface Options {
     // 导入是否携带后缀名
     suffix?: boolean;
     // 需要导出文件类型
-    files?:Array<RegExp>
+    files?:Array<RegExp>;
+    isdefault?: boolean;
 }
 // 导出配置config
 export const configuration: Options = {
@@ -23,6 +24,7 @@ export const configuration: Options = {
     hotUpdate:true,
     suffix: false,
     constApiData: '$apiDate',
+    isdefault: true,
     files: [
         /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
     ],

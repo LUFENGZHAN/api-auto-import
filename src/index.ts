@@ -94,7 +94,7 @@ function template(allFilePaths, config: Options) {
         }
     });
     Object.assign(config, {apiImport,constApiImport, apiDate: JSON.stringify(transformedData, null, 4).replace(/"|'/gim, "")});
-    return lodash.template(fs.readFileSync(path.resolve(__dirname, "../src/template.ts")), "utf-8")(config);
+    return lodash.template(fs.readFileSync(path.resolve(__dirname,config.isdefault? "../src/default.ts" : "../src/template.ts")), "utf-8")(config);
 }
 function apiAutoImport(config: Options, outpath: string, dirPathNname: string) {
     if (!fs.existsSync(outpath)) return console.warn("\x1b[33m%s\x1b[0m", `'${outpath}' not exist`);

@@ -24,6 +24,8 @@ export interface Options {
     hotUpdate?:boolean;
     // 导入是否携带后缀名
     suffix?: boolean;
+    // 是否默认导出object
+    isdefault:boolean;
     // 需要导出文件类型
     files?:Array<RegExp>
 }
@@ -35,6 +37,7 @@ export const config: Options = {
     hotUpdate: true,
     suffix: false,
     constApiData: "$apiDate",
+    isdefault:true,
     files: [
         /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
     ],
@@ -126,4 +129,26 @@ new apiAuto({
     outFile: "index.ts",
     hotUpdate: false,
 })
+
+isdefault 字段是否默认导出object 否 export default {install()}
+export default {install()}
+```
+
+###### 示例
+```js
+import {$apis} from '@/api/index'
+```
+
+###### 备注
+如果需要使用import引入，请使用import引入
+```js
+import {$apis} from '@/api/index'
+```
+
+###### 备注
+如果需要使用export default引入，请使用export default引入
+```js
+export default constApiData
+and
+export default {install()}
 ```

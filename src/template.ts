@@ -16,5 +16,5 @@ export default {
     install(app:App<Element>){
         app.config.globalProperties.<%= apiName %> = <%=constApiData%>;
         window.<%= apiName %> = <%=constApiData%>;
-    }
+    },
 }
