@@ -1,6 +1,5 @@
 /*eslint-disable*/
 // @ts-ignore 
-import {App} from "vue";
 <%=apiImport%>
 
 export const <%=constApiData%> = <%=apiDate%>;
