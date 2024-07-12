@@ -14,7 +14,10 @@ export interface Options {
     suffix?: boolean;
     // 需要导出文件类型
     files?:Array<RegExp>;
-    isdefault?: boolean;
+    //是否采取默认导出对象或者install()函数
+    isDefault?: boolean;
+    // 是生成ts类型文件
+    is_ts?: boolean;
 }
 // 导出配置config
 export const configuration: Options = {
@@ -23,8 +26,9 @@ export const configuration: Options = {
     apiName: '$apis',
     hotUpdate:true,
     suffix: false,
-    constApiData: '$apiDate',
-    isdefault: true,
+    constApiData: '$apiData',
+    isDefault: false,
+    is_ts: true,
     files: [
         /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
     ],

@@ -24,24 +24,27 @@ export interface Options {
     hotUpdate?:boolean;
     // 导入是否携带后缀名
     suffix?: boolean;
-    // 是否默认导出object
-    isdefault:boolean;
     // 需要导出文件类型
-    files?:Array<RegExp>
+    files?:Array<RegExp>;
+    //是否采取默认导出对象或者install()函数
+    isDefault?: boolean;
+    // 是生成ts类型文件
+    is_ts?: boolean;
 }
 // 导出配置config
-export const config: Options = {
-    outFile: "index.ts",
-    resolveAliasName: "src/api",
-    apiName: "$apis",
-    hotUpdate: true,
+export const configuration: Options = {
+    outFile: 'index.ts',
+    resolveAliasName: 'src/api',
+    apiName: '$apis',
+    hotUpdate:true,
     suffix: false,
-    constApiData: "$apiDate",
-    isdefault:true,
+    constApiData: '$apiData',
+    isDefault: false,
+    is_ts: true,
     files: [
         /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
     ],
-};
+}
 ```
 ``` js
 // tsconfig.json
@@ -130,7 +133,7 @@ new apiAuto({
     hotUpdate: false,
 })
 
-isdefault 字段是否默认导出object 否 export default {install()}
+isDefault 字段是否默认导出object 否 export default {install()}
 export default {install()}
 ```
 
