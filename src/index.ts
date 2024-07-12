@@ -86,17 +86,8 @@ function template(allFilePaths, config: Options) {
 		);
 	}, '');
 	let transformedData = {};
-	allPaths.forEach((e, i, array) => {
-		const arr = array
-			.filter(v => v.importName.includes(e.importName))
-			.map(e => e.importName)
-			.filter(v => e.importName.split('_')[0] === v.split('_')[0]);
-		if (arr.length > 1 && e.importName === arr[arr.length - 1]) {
-			e.importName = e.importName + ':updateName';
-		}
-	});
 	allPaths.forEach(item => {
-		const parts = item.pathStr.split('/').filter(part => part !== '');
+		const parts = item.pathStr.split('/').filter(part => part);
 		let currentLevel = transformedData;
         for (let i = 0; i < parts.length; i++) {
             const part = parts[i];
@@ -114,7 +105,7 @@ function template(allFilePaths, config: Options) {
         }
 	});
 	let newtransformedData = JSON.stringify(transformedData, null, 4).replace(/"|'/gim, '');
-	const apiDate = newtransformedData.replace(/(\w+)\s*:\s*(\w+):updateName/g, '...$2');
+	const apiDate = newtransformedData.replace(/part\s*:\s*(\w+)/g, '...$1');
 	Object.assign(config, { apiImport, constApiImport, apiDate });
 	return lodash.template(fs.readFileSync(path.resolve(__dirname, '../src/template.ts')), 'utf-8')(config);
 }
