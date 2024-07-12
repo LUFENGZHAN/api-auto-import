@@ -11,7 +11,6 @@ npm install api-auto-import
 ### 使用方法
 
 ```js
-// 导出接口Options
 export interface Options {
 	/**
 	 * 输出文件名称
@@ -42,7 +41,7 @@ export interface Options {
 	 */
 	files?: Array<RegExp>;
 	/**
-	 * 是否使用默认导出
+	 * 导出的对象中是否有install方法
 	 */
 	isDefault?: boolean;
 	/**
@@ -53,6 +52,10 @@ export interface Options {
 	 * 是否挂载在Window对象
 	 */
     isWindow?: boolean;
+	/**
+	 * 是否导出每个模块
+	 */
+    is_export?: boolean;
 }
 // 导出配置config
 export const configuration: Options = {
@@ -65,6 +68,7 @@ export const configuration: Options = {
 	isDefault: false,
 	is_ts: true,
 	isWindow: true,
+    is_export:false,
 	files: [
 		/\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
 	],
@@ -158,8 +162,8 @@ new apiAuto({
     hotUpdate: false,
 })
 
-isDefault 字段是否默认导出object 否 export default {install()}
-export default {install()}
+isDefault 导出的对象中是否有install方法
+默认 export default {install()}
 ```
 
 ###### 示例

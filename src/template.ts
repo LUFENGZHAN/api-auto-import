@@ -6,8 +6,9 @@ import {App} from "vue";
 <%=apiImport%>
 
 export const <%=constApiData%> = <%=apiDate%>;
-
+<% if (is_export) { %>
 <%=constApiImport%>
+<% } %>
 <% if (is_ts) { %>
 declare global {
     const <%=apiName%>:typeof <%= constApiData %>;
