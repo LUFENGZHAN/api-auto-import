@@ -87,9 +87,8 @@ function template(allFilePaths, config: Options) {
 	}, '')
 	const transformedData = {}
 	allPaths.forEach((e, i, array) => {
-        const arr = array.filter(v=>  v.importName.includes(e.importName)).map(e=>e.importName).filter(v=>e.importName.split('_')[0] === arr[arr.length -1].split('_')[0])
+        const arr = array.filter(v=>  v.importName.includes(e.importName)).map(e=>e.importName).filter((v)=>e.importName.split('_')[0] === v.split('_')[0])
         if(arr.length>1 && e.importName === arr[arr.length -1] ){
-            console.log(e.importName,arr[arr.length -1],arr);
             e.importName =e.importName + ':updateName'
         }
     })
@@ -111,8 +110,7 @@ function template(allFilePaths, config: Options) {
 		}
 	})
 	let newtransformedData = JSON.stringify(transformedData, null, 4).replace(/"|'/gim, '')
-	const apiDate = newtransformedData.replace(/:updateName/g, '1')
-    console.log(apiDate);
+	const apiDate = newtransformedData.replace(/(\w+)\s*:\s*(\w+):updateName/g, '...$2')
 	Object.assign(config, { apiImport, constApiImport, apiDate })
 	return lodash.template(fs.readFileSync(path.resolve(__dirname, '../src/template.ts')), 'utf-8')(config)
 }
@@ -124,7 +122,7 @@ function apiAutoImport(config: Options, outpath: string, dirPathNname: string) {
 	const outFileStr = outFile.match(/(\.[jt]s|\.[tj]sx)$/) ? outFile : `${outFile}.ts`
 	fs.writeFileSync(path.resolve(outpath, is_ts ? outFileStr : outFileStr.replace(/ts/, 'js')), templateString)
 }
-function getConfig(options: Options) {
+function getConfig(options: Options):Partial<Options> {
 	const config = Object.assign({}, configuration, options)
 	const resolveName = config.resolveAliasName.replace(/@/g, 'src')
 	const outFileName = config.outFile.replace(/\.[tj]s$/, '')
@@ -141,6 +139,21 @@ function getConfig(options: Options) {
 		dirPathNname,
 	}
 }
+/**
+ * 
+ * @param {Object} options 
+ * @param  {string} options.outFile 输出文件名称
+ * @param {string} options.resolveAliasName 需要导入的目录
+ * @param {string} options.apiName 全局的模块名称
+ * @param {string} options.constApiData 变量名称
+ * @param {boolean} options.hotUpdate 是否采用文件热更新
+ * @param {boolean} options.suffix 导入是否携带后缀名
+ * @param {Array<RegExp>} options.files 需要导出文件类型
+ * @param {boolean} options.isDefault 是否使用默认导出
+ * @param {boolean} options.is_ts 是否生成ts类型文件
+ * @param {boolean} options.isWindow 是否挂载在Window对象
+ * @returns {Plugin}
+ */
 export function apiAutoVite(options: Options): Plugin {
 	const config = getConfig(options)
 	apiAutoImport(config.config, config.dirPath, config.dirPathNname)
@@ -156,8 +169,23 @@ export function apiAutoVite(options: Options): Plugin {
 		},
 	}
 }
+/**
+ * 
+ * @param {Object} options 
+ * @param  {string} options.outFile 输出文件名称
+ * @param {string} options.resolveAliasName 需要导入的目录
+ * @param {string} options.apiName 全局的模块名称
+ * @param {string} options.constApiData 变量名称
+ * @param {boolean} options.hotUpdate 是否采用文件热更新
+ * @param {boolean} options.suffix 导入是否携带后缀名
+ * @param {Array<RegExp>} options.files 需要导出文件类型
+ * @param {boolean} options.isDefault 是否使用默认导出
+ * @param {boolean} options.is_ts 是否生成ts类型文件
+ * @param {boolean} options.isWindow 是否挂载在Window对象
+ * @returns {Plugin}
+ */
 export class apiAutoWebpack {
-	private config
+	private config:Partial<Options>
 	constructor(options: Options) {
 		this.config = getConfig(options)
 	}
