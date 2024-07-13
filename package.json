@@ -1,6 +1,6 @@
 {
     "name": "api-auto-import",
-    "version": "0.0.4",
+    "version": "0.0.40",
     "exports": {
         "./vite": {
             "import": {
@@ -25,11 +25,7 @@
     },
     "license": "MIT",
     "devDependencies": {
-        "@types/node": "^20.11.28",
-        "fs": "^0.0.1-security",
-        "lodash": "^4.17.21",
-        "path": "^0.12.7",
-        "vite": "^5.1.6"
+        "@types/node": "^20.11.28"
     },
     "keywords": [
         "plugin",
@@ -51,5 +47,11 @@
     ],
     "engines": {
         "node": ">=14"
+    },
+    "dependencies": {
+        "fs": "^0.0.1-security",
+        "lodash": "^4.17.21",
+        "path": "^0.12.7",
+        "vite": "^5.1.6"
     }
 }
