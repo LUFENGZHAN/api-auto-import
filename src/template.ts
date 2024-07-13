@@ -12,7 +12,7 @@ export const <%=constApiData%> = <%=apiDate%>;
 <% if (is_ts) { %>
 declare global {
     const <%=apiName%>:typeof <%= constApiData %>;
-    <% if (isDefault && isWindow) { %>
+    <% if (isDefault && isWindow || isWindow) { %>
     interface Window {
         <%=apiName%> : typeof <%=constApiData%>;
     }

@@ -8,7 +8,7 @@ export interface Options {
 	/**
 	 * 需要导入的目录
 	 */
-	resolveAliasName: string;
+	resolveAliasName?: string;
 	/**
 	 * 全局的模块名称
 	 */
