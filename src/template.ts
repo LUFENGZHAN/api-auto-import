@@ -9,7 +9,7 @@ export const <%=constApiData%> = <%=apiDate%>;
 <% if (is_export) { %>
 <%=constApiImport%>
 <% } %>
-<% if (is_ts) { %>
+<% if (is_ts && !isDefault) { %>
 declare global {
     const <%=apiName%>:typeof <%= constApiData %>;
     <% if (isDefault && isWindow || isWindow) { %>
