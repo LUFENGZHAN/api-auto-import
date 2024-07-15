@@ -1,5 +1,5 @@
 /*eslint-disable*/
-<% if (is_ts) { %>
+<% if (is_ts && !isDefault) { %>
 // @ts-ignore 
 import {App} from "vue";
 <% } %>

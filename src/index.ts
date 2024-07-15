@@ -14,10 +14,18 @@ function isMatchingFormat(str, files) {
 	}
 	return false;
 }
-function replacedStr(str) {
-	return str.replace(/\s+/g,'-' ).replace(/-(\w)/gim, function (match, p1) {
+function replacedStr(str,arr) {
+    let newStr= str.replace(/\s+/g,'-' ).replace(/-(\w)/gim, function (match, p1) {
 		return p1.toUpperCase();
 	});
+    arr.forEach((item,index)=>{
+        if(index===0){
+            newStr=newStr.replace(item,'');
+        }else{
+            newStr=newStr.replace(`/${item}`,'');
+        }
+    })
+	return newStr
 }
 function getAllFilePaths(directoryPath: string, dirPathNname: string, config: Options) {
 	let allFilePaths = [];
@@ -53,16 +61,14 @@ function template(allFilePaths, config: Options) {
 			pathStr = pathStr.replace(config.resolveAliasName, '@/' + allFilePathsStr.slice(1).join('/'));
 		}
 		return {
-			importName: replacedStr(pathStr)
+			importName: replacedStr(pathStr,allFilePathsStr)
 				.replace(/@\//, '')
-				.replace(allFilePathsStr[1], '')
 				.replace(/^(\/)/, '')
 				.replace(/(\\+|\/+)/gim, '_')
 				.replace(/\./gim, '_')
 				.replace(/.[jt]s/, ''),
-			pathStr: replacedStr(pathStr)
+			pathStr: replacedStr(pathStr,allFilePathsStr)
 				.replace(/@\//, '')
-				.replace(allFilePathsStr[1], '')
 				.replace(/\./gim, '_')
 				.replace(/(\\+|\/+)/gim, '/')
 				.replace(/.[jt]s/, ''),
