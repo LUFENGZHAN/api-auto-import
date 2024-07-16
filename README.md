@@ -5,7 +5,7 @@
 ## Project setup
 
 ```
-npm install api-auto-import
+npm install api-auto-import -D
 ```
 
 ### 使用方法
