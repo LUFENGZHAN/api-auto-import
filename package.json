@@ -1,6 +1,6 @@
 {
     "name": "api-auto-import",
-    "version": "0.0.44",
+    "version": "0.0.45",
     "exports": {
         "./vite": {
             "import": {
