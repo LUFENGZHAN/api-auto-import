@@ -35,6 +35,8 @@ apiAuto({
 // vite.config.ts
 import { defineConfig } from 'vite';
 import apiAuto from 'api-auto-import/vite';
+
+// import {apiAutoImport} from 'api-auto-import/vite';
 import { resolve } from 'path';
 export default defineConfig({
 	resolve: {
